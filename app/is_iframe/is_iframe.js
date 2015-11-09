@@ -1,4 +1,5 @@
 "use strict";
+var intervalReload;
 function hideTopBar(){
   if($('.ng-scope[src=topNavPartial]').length > 0)
     $('.ng-scope[src=topNavPartial]').attr('style','display: none !important');
@@ -17,7 +18,7 @@ function hideToggleMenu(){
 }
 function hidePanels(obj){
   var hash = window.location.hash.replace('#', '');
-  if(hash === 'is_iframe'){
+  if(hash.indexOf('is_iframe') >= 0){
     switch(obj){
       case 'top-nav':
         hideTopBar();
@@ -30,5 +31,17 @@ function hidePanels(obj){
         mainViewPaddingAdjust();
         break;
     }
+  }
+  triggerInterval();
+}
+function triggerInterval(){
+  var hash = window.location.hash.replace('#', '');
+  if(hash.indexOf('reload') >= 0){
+    var time = hash.split('-')
+    clearInterval(intervalReload);
+    intervalReload = setInterval(function() {
+      console.log('dei reload');
+      $('.grafana-menu-refresh a').click();
+    }, time[2]);
   }
 }
